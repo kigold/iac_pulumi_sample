@@ -1,0 +1,8 @@
+config:
+  node_iac_app:backendPort: "3000"
+  node_iac_app:database: cart
+  node_iac_app:frontendPort: "3001"
+  node_iac_app:mongoHost: mongodb://mongo:27017
+  node_iac_app:mongoPort: "27017"
+  node_iac_app:nodeEnvironment: development
+  node_iac_app:protocol: http://
