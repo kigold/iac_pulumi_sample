@@ -10,10 +10,10 @@ I also included code to deploy to Kubernetes using Typescript and C#.
 
 ### Installation
 Get Started with Pulumi [https://www.pulumi.com/docs/get-started/].
-You need to setup your programing language of choice, and since we will be deploying to docker and kubernetes, you would need to set those up also.
+You need to setup your programing language of choice, and since we will be deploying to docker and kubernetes, you would also need to set those up.
 
 ### Installation
-Cd into the directory sample, iac_ts_docker or iac_ts_k8s etc
+Cd into the IaC directories iac_ts_docker or iac_ts_k8s etc
 
 powershell
   ```sh
@@ -27,9 +27,9 @@ powershell
   pulumi destroy
   ```
 
-NB: You would need to maually delete the images that was created
+NB: You would need to maually delete the images that were created
 
-NB: This was done using Windows 11 and should work as is for other Os (might need minor tinkering).
+NB: This was done using Windows 11 and should work as is for other Os (might require minor tinkering).
 
 ## Roadmap
  - [x] IaC with Docker Provider using Typescript
