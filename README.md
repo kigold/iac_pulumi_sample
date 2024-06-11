@@ -3,7 +3,6 @@ It contains a sample Node Backend API that connects to a MongoDb and a sample Re
 
 Following the instruction from Pulumi Site we have a solution that deloys the Backend API, Mongo DB and the React Frontend API to docker containers.
 
-TODO
- - IaC with K8s Provider using Typescript
- - IaC with K8s Provider using C#
- - Build Docker Images using Pulumi Docker-Build provider
+ - [ ] IaC with K8s Provider using Typescript
+ - [ ] IaC with K8s Provider using C#
+ - [x] Build Docker Images using Pulumi Docker-Build provider

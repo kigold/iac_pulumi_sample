@@ -1,5 +1,8 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as docker from "@pulumi/docker";
+import * as docker_build from "@pulumi/docker-build";
+import * as backend from "./backend-image"
+import * as frontend from "./frontend-image"
 
 // Get configuration values
 const config = new pulumi.Config();
@@ -13,21 +16,30 @@ const protocol = config.require("protocol")
 
 const stack = pulumi.getStack();
 
-// Pull the backend image
-const backendImageName = "backend";
-const backend = new docker.RemoteImage(`${backendImageName}Image`, {
-    name: "pulumi/tutorial-pulumi-fundamentals-backend:latest",
-});
-
-// Pull the frontend image
-const frontendImageName = "frontend";
-const frontend = new docker.RemoteImage(`${frontendImageName}Image`, {
-    name: "pulumi/tutorial-pulumi-fundamentals-frontend:latest",
-});
-
-// Pull the MongoDB image
-const mongoImage = new docker.RemoteImage("mongoImage", {
-    name: "pulumi/tutorial-pulumi-fundamentals-database-local:latest",
+//Pull the MongoDB image
+const mongoImage = new docker_build.Image("mongo-data", {
+    // Tag our image with our ECR repository's address.
+    tags: [pulumi.interpolate`${"mongo-data"}:latest`],
+    context: {
+        location: "../src/tutorial-pulumi-fundamentals/data",
+    },
+    // Use the pushed image as a cache source.
+    //cacheFrom: [],
+    // Include an inline cache with our pushed image.
+    cacheTo: [{
+        inline: {},
+    }],
+    // Build a multi-platform image manifest for ARM and AMD.
+    // platforms: [
+    //     "linux/amd64",
+    //     //"linux/arm64",
+    // ],
+    exports: [{
+        docker: {
+            tar: true,
+        },
+    }],
+    push: false
 });
 
 // Create a Docker network
@@ -37,7 +49,7 @@ const network = new docker.Network("network", {
 
 // Create the MongoDB container
 const mongoContainer = new docker.Container("mongoContainer", {
-    image: mongoImage.repoDigest,
+    image: mongoImage.ref,
     name: `mongo-${stack}`,
     ports: [
         {
@@ -56,7 +68,7 @@ const mongoContainer = new docker.Container("mongoContainer", {
 // Create the backend container
 const backendContainer = new docker.Container("backendContainer", {
     name: `backend-${stack}`,
-    image: backend.repoDigest,
+    image: backend.ref,
     ports: [
         {
             internal: backendPort,
@@ -77,7 +89,7 @@ const backendContainer = new docker.Container("backendContainer", {
 
 // Create the frontend container
 const frontendContainer = new docker.Container("frontendContainer", {
-    image: frontend.repoDigest,
+    image: frontend.ref,
     name: `frontend-${stack}`,
     ports: [
         {
