@@ -1,8 +1,8 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as docker from "@pulumi/docker";
-import * as docker_build from "@pulumi/docker-build";
-import * as backend from "./backend-image"
-import * as frontend from "./frontend-image"
+import * as backend from "./images/backend-image"
+import * as frontend from "./images/frontend-image"
+import * as mongoImage from "./images/mongo-db-image"
 
 // Get configuration values
 const config = new pulumi.Config();
@@ -16,32 +16,6 @@ const protocol = config.require("protocol")
 
 const stack = pulumi.getStack();
 
-//Pull the MongoDB image
-const mongoImage = new docker_build.Image("mongo-data", {
-    // Tag our image with our ECR repository's address.
-    tags: [pulumi.interpolate`${"mongo-data"}:latest`],
-    context: {
-        location: "../src/tutorial-pulumi-fundamentals/data",
-    },
-    // Use the pushed image as a cache source.
-    //cacheFrom: [],
-    // Include an inline cache with our pushed image.
-    cacheTo: [{
-        inline: {},
-    }],
-    // Build a multi-platform image manifest for ARM and AMD.
-    // platforms: [
-    //     "linux/amd64",
-    //     //"linux/arm64",
-    // ],
-    exports: [{
-        docker: {
-            tar: true,
-        },
-    }],
-    push: false
-});
-
 // Create a Docker network
 const network = new docker.Network("network", {
     name: `services-${stack}`,
@@ -50,7 +24,7 @@ const network = new docker.Network("network", {
 // Create the MongoDB container
 const mongoContainer = new docker.Container("mongoContainer", {
     image: mongoImage.ref,
-    name: `mongo-${stack}`,
+    name: `mongo-data-${stack}`,
     ports: [
         {
             internal: mongoPort,

@@ -1,0 +1,13 @@
+{
+    "name": "node_iac_app",
+    "main": "index.ts",
+    "devDependencies": {
+        "@types/node": "^18",
+        "typescript": "^5.0.0"
+    },
+    "dependencies": {
+        "@pulumi/docker-build": "^0.0.2",
+        "@pulumi/kubernetes": "^4.13.1",
+        "@pulumi/pulumi": "^3.113.0"
+    }
+}
