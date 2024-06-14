@@ -64,6 +64,7 @@ return await Deployment.RunAsync(() =>
     {
         Metadata = new ObjectMetaArgs
         {
+            Name = "mongo-service",
             Labels = mongoDeployment.Spec.Apply(spec =>
                 spec.Template.Metadata.Labels
             ),
@@ -117,7 +118,7 @@ return await Deployment.RunAsync(() =>
                             ImagePullPolicy = "IfNotPresent",
                             Env = new[]
                             {
-                                new EnvVarArgs{ Name = "DATABASE_HOST", Value = $"mongodb://mongo:{mongoPort}" },
+                                new EnvVarArgs{ Name = "DATABASE_HOST", Value = $"mongodb://mongo-service:{mongoPort}" },
                                 new EnvVarArgs{ Name = "DATABASE_NAME", Value = database },
                                 new EnvVarArgs{ Name = "NODE_ENV", Value = nodeEnv }
                             }
@@ -132,6 +133,7 @@ return await Deployment.RunAsync(() =>
     {
         Metadata = new ObjectMetaArgs
         {
+            Name = "backend-service",
             Labels = backendDeployment.Spec.Apply(spec =>
                 spec.Template.Metadata.Labels
        ),
@@ -200,6 +202,7 @@ return await Deployment.RunAsync(() =>
     {
         Metadata = new ObjectMetaArgs
         {
+            Name = "frontend-service",
             Labels = frontendDeployment.Spec.Apply(spec =>
                 spec.Template.Metadata.Labels
            ),

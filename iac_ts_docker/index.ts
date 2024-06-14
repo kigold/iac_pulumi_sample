@@ -1,8 +1,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as docker from "@pulumi/docker";
-import * as backend from "./images/backend-image"
-import * as frontend from "./images/frontend-image"
-import * as mongoImage from "./images/mongo-db-image"
+import * as imageBuilder from "./image-builder"
 
 // Get configuration values
 const config = new pulumi.Config();
@@ -23,7 +21,7 @@ const network = new docker.Network("network", {
 
 // Create the MongoDB container
 const mongoContainer = new docker.Container("mongoContainer", {
-    image: mongoImage.ref,
+    image: imageBuilder.build("mongo-data", "../src/tutorial-pulumi-fundamentals/data"),
     name: `mongo-data-${stack}`,
     ports: [
         {
@@ -42,7 +40,7 @@ const mongoContainer = new docker.Container("mongoContainer", {
 // Create the backend container
 const backendContainer = new docker.Container("backendContainer", {
     name: `backend-${stack}`,
-    image: backend.ref,
+    image: imageBuilder.build("backend", "../src/tutorial-pulumi-fundamentals/backend"),
     ports: [
         {
             internal: backendPort,
@@ -63,7 +61,7 @@ const backendContainer = new docker.Container("backendContainer", {
 
 // Create the frontend container
 const frontendContainer = new docker.Container("frontendContainer", {
-    image: frontend.ref,
+    image: imageBuilder.build("frontend", "../src/tutorial-pulumi-fundamentals/frontend"),
     name: `frontend-${stack}`,
     ports: [
         {

@@ -1,8 +1,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as k8s from "@pulumi/kubernetes";
-import * as backend from "./images/backend-image"
-import * as frontend from "./images/frontend-image"
-import * as mongoImage from "./images/mongo-db-image"
+import * as imageBuilder from "./image-builder"
 
 // Get configuration values
 const config = new pulumi.Config();
@@ -22,7 +20,11 @@ const mongoDeployment = new k8s.apps.v1.Deployment(mongoLabels.app, {
         replicas: 1,
         template: {
             metadata: { labels: mongoLabels },
-            spec: { containers: [{ name: mongoLabels.app, image: mongoImage.ref, imagePullPolicy: "IfNotPresent"}] }
+            spec: { containers: [{ 
+                name: mongoLabels.app, 
+                image: imageBuilder.build("mongo-data", "../src/tutorial-pulumi-fundamentals/data"), 
+                imagePullPolicy: "IfNotPresent"
+            }] }
         }
     }
 });
@@ -48,10 +50,10 @@ const backendDeployment = new k8s.apps.v1.Deployment(backendLabels.app, {
                     containers: [
                         {
                             name: backendLabels.app,
-                            image: backend.ref,
+                            image: imageBuilder.build("backend", "../src/tutorial-pulumi-fundamentals/backend"),
                             imagePullPolicy: "IfNotPresent",
                             env: [
-                                { name: 'DATABASE_HOST', value: `mongodb://mongo-service:${mongoPort}`},
+                                { name: "DATABASE_HOST", value: `mongodb://mongo-service:${mongoPort}`},
                                 { name: "DATABASE_NAME", value: database },
                                 { name: "NODE_ENV", value: nodeEnvironment },
                             ]
@@ -84,7 +86,7 @@ const frontendDeployment = new k8s.apps.v1.Deployment(frontendLabels.app, {
                     containers: [
                         {
                             name: frontendLabels.app,
-                            image: frontend.ref,
+                            image: imageBuilder.build("frontend", "../src/tutorial-pulumi-fundamentals/frontend"),
                             imagePullPolicy: "IfNotPresent",
                             env: [
                                 { name: 'PORT', value: frontendPort.toString() },

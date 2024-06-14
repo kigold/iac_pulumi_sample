@@ -1,6 +1,6 @@
 name: node_iac_app
 runtime: nodejs
-description: A minimal TypeScript Pulumi program
+description: A minimal Docker TypeScript Pulumi program
 config:
   pulumi:tags:
     value:

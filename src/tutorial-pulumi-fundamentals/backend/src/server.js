@@ -7,6 +7,7 @@ process.on('uncaughtException', (err) => {
   process.exit(1);
 });
 
+console.log("DB CONNECTION >>>>>>>>>>>>>", process.env.DATABASE_HOST + "/" + process.env.DATABASE_NAME)
 mongoose
   .connect(process.env.DATABASE_HOST + "/" + process.env.DATABASE_NAME, {
     useNewUrlParser: true,

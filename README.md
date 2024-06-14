@@ -35,4 +35,4 @@ NB: This was done using Windows 11 and should work as is for other Os (might req
  - [x] IaC with Docker Provider using Typescript
  - [x] Build Docker Images using Pulumi Docker-Build provider
  - [x] IaC with K8s Provider using Typescript
- - [ ] IaC with K8s Provider using C#
+ - [x] IaC with K8s Provider using C#
