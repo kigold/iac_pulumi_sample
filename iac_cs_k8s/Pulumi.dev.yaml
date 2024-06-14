@@ -1,0 +1,9 @@
+config:
+  iacCsK8s:backendPort: "3000"
+  iacCsK8s:database: cart
+  iacCsK8s:frontendPort: "3001"
+  iacCsK8s:mongoHost: mongodb://mongo:27017
+  iacCsK8s:mongoPort: "27017"
+  iacCsK8s:nodeEnvironment: development
+  iacCsK8s:protocol: http://
+  iacCsK8s:isMinikube: false

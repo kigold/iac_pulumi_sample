@@ -1,0 +1,7 @@
+name: iacCsK8s
+runtime: dotnet
+description: A minimal Kubernetes C# Pulumi program
+config:
+  pulumi:tags:
+    value:
+      pulumi:template: kubernetes-csharp

@@ -6,7 +6,7 @@ Following the instruction from Pulumi Site we have a solution that deloys the Ba
 I also included code to deploy to Kubernetes using Typescript and C#.
 
 ### Built With
-[[Pulumi-url](https://www.pulumi.com/)]
+[Pulumi-url](https://www.pulumi.com/)
 
 ### Installation
 Get Started with Pulumi [https://www.pulumi.com/docs/get-started/].
